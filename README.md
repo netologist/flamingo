@@ -1,5 +1,5 @@
-# Raki
-Gin-Gonic Starter Kit
+# Vodka
+Gin-Gonic Starter Kit (THIS PROJECT IS CURRENTLY UNDER DEVELOPMENT)
 
 ### Stack
  - Configuration (Viper)

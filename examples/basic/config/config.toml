@@ -1,0 +1,4 @@
+[mongo]
+username="user"
+password="pass"
+uri="localhost"
