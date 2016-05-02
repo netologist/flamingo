@@ -1,8 +1,7 @@
-# raki
+# Raki
 Gin-Gonic Starter Kit
 
-Stack
-===
+### Stack
  - Configuration (Viper)
  - Logging (Logrus)
  - Http Client (gorequest)
