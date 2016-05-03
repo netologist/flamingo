@@ -9,12 +9,9 @@ type UserHandler struct {
 func (h *UserHandler) Index(c *gin.Context) {
 	a := h.AppContext(c)
 
-	user := a.Services().UserService().GetUserById(123)
+	logger := a.NewLogger("User.Index Handler")
+	logger.Info("hede hodo")
 
-	//logger := a.NewLogger("User.Index Handler")
-	//logger.Info()
-	//	fmt.Println("user %s", a)
-	//log.Infof("username: %s", "ekin")
-	//content := gin.H{"Hello": "World"}
+	user := a.Services().UserService().GetUserById(123)
 	c.JSON(200, user)
 }

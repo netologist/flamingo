@@ -2,3 +2,8 @@
 username="user"
 password="pass"
 uri="localhost"
+
+[log]
+level="info"
+output="stdout"
+format="json"

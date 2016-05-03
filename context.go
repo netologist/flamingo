@@ -17,21 +17,4 @@ func NewAppContext(ctx *gin.Context) *AppContext {
 	httpClientFactory := NewHttpClientFactory(loggerFactory)
 
 	return &AppContext{ctx, dbClientFactory, httpClientFactory, loggerFactory}
-
-}
-
-func (a *AppContext) IsLoggedIn() bool {
-	return false
-}
-
-func (a *AppContext) UserInfo() *UserInfo {
-	return &UserInfo{}
-}
-
-func (a *AppContext) Services() *Services {
-	return &Services{a.dbClientFactory, a.httpClientFactory, a.loggerFactory}
-}
-
-func (c *AppContext) NewLogger(name string) (l *Logger) {
-	return &Logger{}
 }

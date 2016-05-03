@@ -1,12 +1,20 @@
 package vodka
 
 import (
-	"os"
-	//"fmt"
-
 	"github.com/Sirupsen/logrus"
-	//"github.com/bshuster-repo/logrus-logstash-hook"
 )
+
+func NewLoggerFactory(fields map[string]interface{}) *LoggerFactory {
+	return &LoggerFactory{fields}
+}
+
+type LoggerFactory struct {
+	fields map[string]interface{}
+}
+
+func (l *LoggerFactory) NewLogger(name string) Logger {
+	return Logger{name, l.fields}
+}
 
 type Logger struct {
 	name          string
@@ -79,27 +87,4 @@ func (l *Logger) DebugWithFields(format string, fields logrus.Fields, args ...in
 
 func (l *Logger) Debug(format string, args ...interface{}) {
 	l.DebugWithFields(format, nil, args...)
-}
-
-type LoggerFactory struct {
-	fields map[string]interface{}
-}
-
-func (l *LoggerFactory) NewLogger(name string) Logger {
-	return Logger{name, l.fields}
-}
-
-func NewLoggerFactory(fields map[string]interface{}) *LoggerFactory {
-	return &LoggerFactory{fields}
-}
-
-func init() {
-	// Log as JSON instead of the default ASCII formatter.
-	logrus.SetFormatter(&logrus.JSONFormatter{})
-
-	// Output to stderr instead of stdout, could also be a file.
-	logrus.SetOutput(os.Stdout)
-
-	// Only log the warning severity or above.
-	logrus.SetLevel(logrus.DebugLevel)
 }

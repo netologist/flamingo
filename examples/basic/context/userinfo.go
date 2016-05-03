@@ -1,3 +1,3 @@
-package vodka
+package context
 
 type UserInfo struct{}

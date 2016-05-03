@@ -28,14 +28,14 @@ func (a *AppContext) IsLoggedIn() bool {
 	return false
 }
 
-func (a *AppContext) UserInfo() *vodka.UserInfo {
-	return &vodka.UserInfo{}
+func (a *AppContext) UserInfo() *UserInfo {
+	return &UserInfo{}
 }
 
 func (a *AppContext) Services() *services.Services {
 	return services.New(a.dbClientFactory, a.httpClientFactory, a.loggerFactory)
 }
 
-func (c *AppContext) NewLogger(name string) (l *vodka.Logger) {
-	return &vodka.Logger{}
+func (a *AppContext) NewLogger(name string) vodka.Logger {
+	return a.loggerFactory.NewLogger(name)
 }
