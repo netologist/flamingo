@@ -12,7 +12,7 @@ type AppContext struct {
 }
 
 func NewAppContext(ctx *gin.Context) *AppContext {
-	loggerFactory := NewLoggerFactory(ctx.Keys)
+	loggerFactory := NewLoggerFactory()
 	dbClientFactory := NewDbClientFactory(loggerFactory)
 	httpClientFactory := NewHttpClientFactory(loggerFactory)
 

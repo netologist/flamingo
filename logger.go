@@ -4,12 +4,20 @@ import (
 	"github.com/Sirupsen/logrus"
 )
 
-func NewLoggerFactory(fields map[string]interface{}) *LoggerFactory {
+func NewLoggerFactoryWithFields(fields map[string]interface{}) *LoggerFactory {
 	return &LoggerFactory{fields}
+}
+
+func NewLoggerFactory() *LoggerFactory {
+	return &LoggerFactory{map[string]interface{}{}}
 }
 
 type LoggerFactory struct {
 	fields map[string]interface{}
+}
+
+func (l *LoggerFactory) GetFields() map[string]interface{} {
+	return l.fields
 }
 
 func (l *LoggerFactory) NewLogger(name string) Logger {
@@ -17,7 +25,7 @@ func (l *LoggerFactory) NewLogger(name string) Logger {
 }
 
 type Logger struct {
-	name          string
+	Name          string
 	defaultFields map[string]interface{}
 }
 
@@ -25,7 +33,7 @@ func (l *Logger) newEntry(fields map[string]interface{}) *logrus.Entry {
 	lfields := logrus.Fields{}
 
 	// logger Name
-	lfields["name"] = l.name
+	lfields["name"] = l.Name
 
 	// default fields
 	if len(l.defaultFields) > 0 {

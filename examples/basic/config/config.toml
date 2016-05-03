@@ -1,7 +1,5 @@
 [mongo]
-username="user"
-password="pass"
-uri="localhost"
+uri="mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]"
 
 [log]
 level="info"
