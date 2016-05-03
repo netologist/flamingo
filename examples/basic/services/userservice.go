@@ -9,13 +9,14 @@ import (
 type UserService struct {
 	userRepository    *repositories.UserRepository
 	httpClientFactory *vodka.HttpClientFactory
-	loggerFactory     *vodka.LoggerFactory
+	logger            vodka.Logger
 }
 
-func NewUserService(userRepository *repositories.UserRepository, httpClientFactory *vodka.HttpClientFactory, loggerFactory *vodka.LoggerFactory) *UserService {
-	return &UserService{userRepository, httpClientFactory, loggerFactory}
+func NewUserService(userRepository *repositories.UserRepository, httpClientFactory *vodka.HttpClientFactory, logger vodka.Logger) *UserService {
+	return &UserService{userRepository, httpClientFactory, logger}
 }
 
 func (s *UserService) GetUserById(id int) models.User {
+	s.logger.Info("Get User By Id %d", id)
 	return s.userRepository.FindUserById(id)
 }

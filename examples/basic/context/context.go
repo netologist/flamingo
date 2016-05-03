@@ -14,7 +14,10 @@ type AppContext struct {
 }
 
 func NewAppContext(ctx *gin.Context) *AppContext {
-	loggerFactory := vodka.NewLoggerFactory(ctx.Keys)
+	fields := map[string]interface{}{}
+	fields["X-Correlation-ID"] = ctx.Request.Header["X-Correlation-ID"]
+
+	loggerFactory := vodka.NewLoggerFactory(fields)
 	dbClientFactory := vodka.NewDbClientFactory(loggerFactory)
 	httpClientFactory := vodka.NewHttpClientFactory(loggerFactory)
 

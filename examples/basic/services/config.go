@@ -16,6 +16,6 @@ func New(dbClientFactory *vodka.DbClientFactory, httpClientFactory *vodka.HttpCl
 }
 
 func (s *Services) UserService() *UserService {
-	userRepository := repositories.NewUserRepository(s.dbClientFactory, s.loggerFactory)
-	return NewUserService(userRepository, s.httpClientFactory, s.loggerFactory)
+	userRepository := repositories.NewUserRepository(s.dbClientFactory, s.loggerFactory.NewLogger("User Repository"))
+	return NewUserService(userRepository, s.httpClientFactory, s.loggerFactory.NewLogger("User Service"))
 }
