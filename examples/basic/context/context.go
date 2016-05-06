@@ -7,21 +7,37 @@ import (
 )
 
 type AppContext struct {
+	vodka.Context
 	ctx               *gin.Context
 	dbClientFactory   *vodka.DbClientFactory
 	httpClientFactory *vodka.HttpClientFactory
 	loggerFactory     *vodka.LoggerFactory
 }
 
-func NewAppContext(ctx *gin.Context) *AppContext {
+func (c AppContext) SetDefaultFields(ctx *gin.Context) map[string]interface{} {
+	return map[string]interface{}{}
+}
+
+func (c AppContext) LoggerFactory() vodka.LoggerFactory {
+	return vodka.LoggerFactory{}
+}
+func (c AppContext) HttpClientFactory() vodka.HttpClientFactory {
+	return vodka.HttpClientFactory{}
+}
+func (c AppContext) DbClientFactory() vodka.DbClientFactory {
+	return vodka.DbClientFactory{}
+}
+
+func NewAppContext(ctx *gin.Context) AppContext {
 	fields := map[string]interface{}{}
 	fields["X-Correlation-ID"] = ctx.Request.Header["X-Correlation-ID"]
 
-	loggerFactory := vodka.NewLoggerFactory(fields)
+	loggerFactory := vodka.NewLoggerFactoryWithFields(fields)
 	dbClientFactory := vodka.NewDbClientFactory(loggerFactory)
 	httpClientFactory := vodka.NewHttpClientFactory(loggerFactory)
 
-	return &AppContext{ctx, dbClientFactory, httpClientFactory, loggerFactory}
+	context := AppContext{ctx: ctx, dbClientFactory: dbClientFactory, httpClientFactory: httpClientFactory, loggerFactory: loggerFactory}
+	return context
 }
 
 func (a *AppContext) IsLoggedIn() bool {

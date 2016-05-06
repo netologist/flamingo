@@ -1,12 +1,10 @@
 package vodka
 
-import (
-	"github.com/gin-gonic/gin"
-)
+import "github.com/gin-gonic/gin"
 
-func Default() *gin.Engine {
+func Default() *Engine {
 	loadConfig()
-
-	app := gin.Default()
-	return app
+	engine := &Engine{engine: gin.Default()}
+	engine.RegisterContext(AppContext{})
+	return engine
 }

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/hasanozgan/vodka"
 	"github.com/hasanozgan/vodka/examples/basic/handlers"
 )
 
@@ -13,6 +13,6 @@ func init() {
 	userHandler = &handlers.UserHandler{}
 }
 
-func Register(engine *gin.Engine) {
+func Register(engine *vodka.Engine) {
 	engine.GET("/", userHandler.Index)
 }
