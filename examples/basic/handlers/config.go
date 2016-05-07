@@ -9,6 +9,6 @@ import (
 type Handler struct {
 }
 
-func (h *Handler) AppContext(c *gin.Context) *context.AppContext {
-	return context.NewAppContext(c)
+func (h *Handler) AppContext(c *gin.Context) context.AppContext {
+	return context.NewAppContext(c).(context.AppContext)
 }

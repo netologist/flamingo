@@ -1,0 +1,142 @@
+package vodka
+
+import (
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
+
+	"golang.org/x/net/context"
+
+	"github.com/gin-gonic/gin"
+	"github.com/graphql-go/graphql"
+)
+
+const (
+	ContentTypeJSON           = "application/json"
+	ContentTypeGraphQL        = "application/graphql"
+	ContentTypeFormURLEncoded = "application/x-www-form-urlencoded"
+)
+
+type RequestOptions struct {
+	Query         string                 `json:"query" url:"query" schema:"query"`
+	Variables     map[string]interface{} `json:"variables" url:"variables" schema:"variables"`
+	OperationName string                 `json:"operationName" url:"operationName" schema:"operationName"`
+}
+
+// a workaround for getting`variables` as a JSON string
+type requestOptionsCompatibility struct {
+	Query         string `json:"query" url:"query" schema:"query"`
+	Variables     string `json:"variables" url:"variables" schema:"variables"`
+	OperationName string `json:"operationName" url:"operationName" schema:"operationName"`
+}
+
+func getFromForm(values url.Values) *RequestOptions {
+	query := values.Get("query")
+	if query != "" {
+		// get variables map
+		var variables map[string]interface{}
+		variablesStr := values.Get("variables")
+		json.Unmarshal([]byte(variablesStr), variables)
+
+		return &RequestOptions{
+			Query:         query,
+			Variables:     variables,
+			OperationName: values.Get("operationName"),
+		}
+	}
+
+	return nil
+}
+
+func NewRequestOptions(r *http.Request) *RequestOptions {
+	if reqOpt := getFromForm(r.URL.Query()); reqOpt != nil {
+		return reqOpt
+	}
+
+	if r.Method != "POST" {
+		return &RequestOptions{}
+	}
+
+	if r.Body == nil {
+		return &RequestOptions{}
+	}
+
+	// TODO: improve Content-Type handling
+	contentTypeStr := r.Header.Get("Content-Type")
+	contentTypeTokens := strings.Split(contentTypeStr, ";")
+	contentType := contentTypeTokens[0]
+
+	switch contentType {
+	case ContentTypeGraphQL:
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			return &RequestOptions{}
+		}
+		return &RequestOptions{
+			Query: string(body),
+		}
+	case ContentTypeFormURLEncoded:
+		if err := r.ParseForm(); err != nil {
+			return &RequestOptions{}
+		}
+
+		if reqOpt := getFromForm(r.PostForm); reqOpt != nil {
+			return reqOpt
+		}
+
+		return &RequestOptions{}
+
+	case ContentTypeJSON:
+		fallthrough
+	default:
+		var opts RequestOptions
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			return &opts
+		}
+		err = json.Unmarshal(body, &opts)
+		if err != nil {
+			// Probably `variables` was sent as a string instead of an object.
+			// So, we try to be polite and try to parse that as a JSON string
+			var optsCompatible requestOptionsCompatibility
+			json.Unmarshal(body, &optsCompatible)
+			json.Unmarshal([]byte(optsCompatible.Variables), &opts.Variables)
+		}
+		return &opts
+	}
+}
+
+type GraphQLHandlerConfig struct {
+	Schema         graphql.Schema
+	Pretty         bool
+	ContextFactory func(ctx *gin.Context) context.Context
+}
+
+func NewGraphQLHandler(config GraphQLHandlerConfig) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		opts := NewRequestOptions(ctx.Request)
+
+		params := graphql.Params{
+			Schema:         config.Schema,
+			RequestString:  opts.Query,
+			VariableValues: opts.Variables,
+			OperationName:  opts.OperationName,
+			Context:        ctx,
+		}
+
+		if nil != config.ContextFactory {
+			params.Context = config.ContextFactory(ctx)
+		}
+
+		result := graphql.Do(params)
+
+		if config.Pretty {
+			ctx.IndentedJSON(http.StatusOK, result)
+		} else {
+			ctx.JSON(http.StatusOK, result)
+		}
+	}
+}

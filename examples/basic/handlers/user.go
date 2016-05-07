@@ -8,7 +8,6 @@ type UserHandler struct {
 
 func (h *UserHandler) Index(c *gin.Context) {
 	a := h.AppContext(c)
-
 	logger := a.NewLogger("User.Index Handler")
 	logger.Info("hede hodo")
 

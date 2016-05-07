@@ -1,9 +1,12 @@
 package context
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hasanozgan/vodka"
 	"github.com/hasanozgan/vodka/examples/basic/services"
+	"golang.org/x/net/context"
 )
 
 type AppContext struct {
@@ -13,15 +16,16 @@ type AppContext struct {
 	loggerFactory     *vodka.LoggerFactory
 }
 
-func NewAppContext(ctx *gin.Context) *AppContext {
+func NewAppContext(ctx *gin.Context) context.Context {
 	fields := map[string]interface{}{}
 	fields["X-Correlation-ID"] = ctx.Request.Header["X-Correlation-ID"]
 
-	loggerFactory := vodka.NewLoggerFactory(fields)
+	loggerFactory := vodka.NewLoggerFactoryWithFields(fields)
 	dbClientFactory := vodka.NewDbClientFactory(loggerFactory)
 	httpClientFactory := vodka.NewHttpClientFactory(loggerFactory)
 
-	return &AppContext{ctx, dbClientFactory, httpClientFactory, loggerFactory}
+	appContext := AppContext{ctx, dbClientFactory, httpClientFactory, loggerFactory}
+	return appContext
 }
 
 func (a *AppContext) IsLoggedIn() bool {
@@ -38,4 +42,24 @@ func (a *AppContext) Services() *services.Services {
 
 func (a *AppContext) NewLogger(name string) vodka.Logger {
 	return a.loggerFactory.NewLogger(name)
+}
+
+/************************************/
+/***** GOLANG.ORG/X/NET/CONTEXT *****/
+/************************************/
+
+func (c AppContext) Deadline() (deadline time.Time, ok bool) {
+	return
+}
+
+func (c AppContext) Done() <-chan struct{} {
+	return nil
+}
+
+func (c AppContext) Err() error {
+	return nil
+}
+
+func (c AppContext) Value(key interface{}) interface{} {
+	return nil
 }
