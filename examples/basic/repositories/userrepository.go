@@ -24,7 +24,7 @@ func (r *UserRepository) FindUserById(id int) models.User {
 	session.Db("mydb").Collection("users").Query({"id":123}).All(&results)
 
 	defer session.Close()
-	
+
 	r.logger.Info("Find User By Id %d", id)
 	return models.User{1234, "Ekin Ozgan", "Istanbul"}
 }

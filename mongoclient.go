@@ -86,3 +86,31 @@ func (m *MongoClient) OpenSession() (MongoSession, error) {
 func NewMongoClient(uri string, loggerFactory *LoggerFactory) MongoClient {
 	return MongoClient{loggerFactory}
 }
+
+// ******************************************
+// Mongo Query
+// ******************************************
+//
+// user := User{}
+// users := []User{}
+//
+// mongo := mongoclient.NewMongoClient("localhost")
+//
+// session, err := mongo.OpenSession()
+//
+// if err != nil {
+// 	return
+// }
+//
+// defer session.Close()
+//
+// err = session.Db("devdb").Collection("users").Query(mongoclient.Selectors{"username": "jdoe", "password": "secret"}).One(&user)
+// err = session.Db("devdb").Collection("users").Query(mongoclient.Selectors{"role": "developer"}).All(&users)
+//
+// err = session.Db("devdb").Collection("users").FindById("123").One(&user)
+//
+// newUser := User{Id: "123", Username: "jdoe"}
+//
+// err = session.Db("devdb").Collection("users").Insert(&newUser)
+// err = session.Db("devdb").Collection("users").Update(&newUser)
+// err = session.Db("devdb").Collection("users").RemoveById("123")
