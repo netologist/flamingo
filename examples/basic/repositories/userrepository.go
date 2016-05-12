@@ -14,17 +14,22 @@ func NewUserRepository(dbClientFactory *vodka.DbClientFactory, logger vodka.Logg
 	return &UserRepository{dbClientFactory, logger}
 }
 
-func (r *UserRepository) FindUserById(id int) models.User {
-	mongo := r.dbClientFactory.NewMongoClient()
+func (r *UserRepository) FindUserById(id int) (models.User, error) {
+	result := models.User{}
+	results := []models.User{}
 
-	session := mongo.OpenSession()
+	session, err := r.dbClientFactory.MongoClient.OpenSession()
+
+	if err != nil {
+		return result, err
+	}
 
 	session.Db("mydb").Collection("users").FindById(123).One(&result)
 	session.Db("mydb").Collection("users").FindById(123).All(&results)
-	session.Db("mydb").Collection("users").Query({"id":123}).All(&results)
+	session.Db("mydb").Collection("users").Query(vodka.Selectors{"id": 123}).All(&results)
 
 	defer session.Close()
 
 	r.logger.Info("Find User By Id %d", id)
-	return models.User{1234, "Ekin Ozgan", "Istanbul"}
+	return models.User{1234, "Ekin Ozgan", "Istanbul"}, nil
 }

@@ -11,6 +11,11 @@ func (h *UserHandler) Index(c *gin.Context) {
 	logger := a.NewLogger("User.Index Handler")
 	logger.Info("hede hodo")
 
-	user := a.Services().UserService().GetUserById(123)
-	c.JSON(200, user)
+	user, err := a.Services().UserService().GetUserById(123)
+
+	if err != nil {
+		c.Abort()
+	} else {
+		c.JSON(200, user)
+	}
 }

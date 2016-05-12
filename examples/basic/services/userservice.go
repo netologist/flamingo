@@ -16,7 +16,7 @@ func NewUserService(userRepository *repositories.UserRepository, httpClientFacto
 	return &UserService{userRepository, httpClientFactory, logger}
 }
 
-func (s *UserService) GetUserById(id int) models.User {
+func (s *UserService) GetUserById(id int) (models.User, error) {
 	s.logger.Info("Get User By Id %d", id)
 	return s.userRepository.FindUserById(id)
 }
