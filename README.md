@@ -1,7 +1,8 @@
-# Vodka
+# Flamingo Cocktail
 Gin-Gonic Starter Kit (THIS PROJECT IS CURRENTLY UNDER DEVELOPMENT)
 
 ### Stack
+ - --Gin-- :heavy_check_mark:
  - ~~Configuration ["Viper"](https://github.com/spf13/viper)~~ :heavy_check_mark:
  - ~~Logging ["Logrus"](https://github.com/Sirupsen/logrus)~~ :heavy_check_mark:
  - ~~GraphQL ["graphql-go"](https://github.com/graphql-go/graphql)~~ :heavy_check_mark:
