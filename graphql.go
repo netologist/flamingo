@@ -1,4 +1,4 @@
-package vodka
+package flamingo
 
 import (
 	"encoding/json"

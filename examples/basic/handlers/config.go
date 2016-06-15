@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/hasanozgan/vodka/examples/basic/context"
+	"github.com/hasanozgan/flamingo/examples/basic/context"
 
 	"github.com/gin-gonic/gin"
 )

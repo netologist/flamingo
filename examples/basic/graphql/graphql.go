@@ -1,7 +1,7 @@
 package graphql
 
 import (
-	"github.com/hasanozgan/vodka/examples/basic/context"
+	"github.com/hasanozgan/flamingo/examples/basic/context"
 
 	"github.com/graphql-go/graphql"
 )

@@ -1,17 +1,17 @@
 package services
 
 import (
-	"github.com/hasanozgan/vodka"
-	"github.com/hasanozgan/vodka/examples/basic/repositories"
+	"github.com/hasanozgan/flamingo"
+	"github.com/hasanozgan/flamingo/examples/basic/repositories"
 )
 
 type Services struct {
-	dbClientFactory   *vodka.DbClientFactory
-	httpClientFactory *vodka.HttpClientFactory
-	loggerFactory     *vodka.LoggerFactory
+	dbClientFactory   *flamingo.DbClientFactory
+	httpClientFactory *flamingo.HttpClientFactory
+	loggerFactory     *flamingo.LoggerFactory
 }
 
-func New(dbClientFactory *vodka.DbClientFactory, httpClientFactory *vodka.HttpClientFactory, loggerFactory *vodka.LoggerFactory) *Services {
+func New(dbClientFactory *flamingo.DbClientFactory, httpClientFactory *flamingo.HttpClientFactory, loggerFactory *flamingo.LoggerFactory) *Services {
 	return &Services{dbClientFactory, httpClientFactory, loggerFactory}
 }
 

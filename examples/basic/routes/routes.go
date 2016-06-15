@@ -3,10 +3,10 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/hasanozgan/vodka"
-	"github.com/hasanozgan/vodka/examples/basic/context"
-	"github.com/hasanozgan/vodka/examples/basic/graphql"
-	"github.com/hasanozgan/vodka/examples/basic/handlers"
+	"github.com/hasanozgan/flamingo"
+	"github.com/hasanozgan/flamingo/examples/basic/context"
+	"github.com/hasanozgan/flamingo/examples/basic/graphql"
+	"github.com/hasanozgan/flamingo/examples/basic/handlers"
 )
 
 var (
@@ -19,8 +19,8 @@ func init() {
 
 func Register(engine *gin.Engine) {
 	engine.GET("/", user.Index)
-	engine.GET("/graphql", vodka.NewGraphIQLHandler())
-	engine.POST("/graphql", vodka.NewGraphQLHandler(vodka.GraphQLHandlerConfig{
+	engine.GET("/graphql", flamingo.NewGraphIQLHandler())
+	engine.POST("/graphql", flamingo.NewGraphQLHandler(flamingo.GraphQLHandlerConfig{
 		Schema:         graphql.NewGraphQLSchema(),
 		Pretty:         true,
 		ContextFactory: context.NewAppContext,

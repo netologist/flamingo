@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/hasanozgan/vodka"
-	"github.com/hasanozgan/vodka/examples/basic/routes"
+	"github.com/hasanozgan/flamingo"
+	"github.com/hasanozgan/flamingo/examples/basic/routes"
 )
 
 func main() {
-	engine := vodka.Default()
+	engine := flamingo.Default()
 	routes.Register(engine)
 	engine.Run(":8000")
 }

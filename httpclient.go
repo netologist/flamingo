@@ -1,4 +1,4 @@
-package vodka
+package flamingo
 
 type HttpClientFactory struct {
 	loggerFactory *LoggerFactory

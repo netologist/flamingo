@@ -1,18 +1,18 @@
 package services
 
 import (
-	"github.com/hasanozgan/vodka"
-	"github.com/hasanozgan/vodka/examples/basic/models"
-	"github.com/hasanozgan/vodka/examples/basic/repositories"
+	"github.com/hasanozgan/flamingo"
+	"github.com/hasanozgan/flamingo/examples/basic/models"
+	"github.com/hasanozgan/flamingo/examples/basic/repositories"
 )
 
 type UserService struct {
 	userRepository    *repositories.UserRepository
-	httpClientFactory *vodka.HttpClientFactory
-	logger            vodka.Logger
+	httpClientFactory *flamingo.HttpClientFactory
+	logger            flamingo.Logger
 }
 
-func NewUserService(userRepository *repositories.UserRepository, httpClientFactory *vodka.HttpClientFactory, logger vodka.Logger) *UserService {
+func NewUserService(userRepository *repositories.UserRepository, httpClientFactory *flamingo.HttpClientFactory, logger flamingo.Logger) *UserService {
 	return &UserService{userRepository, httpClientFactory, logger}
 }
 

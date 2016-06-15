@@ -1,4 +1,4 @@
-package vodka
+package flamingo
 
 import "github.com/spf13/viper"
 

@@ -1,4 +1,4 @@
-package vodka
+package flamingo
 
 type Selectors map[string]interface{}
 

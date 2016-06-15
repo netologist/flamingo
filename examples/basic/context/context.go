@@ -4,25 +4,25 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hasanozgan/vodka"
-	"github.com/hasanozgan/vodka/examples/basic/services"
+	"github.com/hasanozgan/flamingo"
+	"github.com/hasanozgan/flamingo/examples/basic/services"
 	"golang.org/x/net/context"
 )
 
 type AppContext struct {
 	ctx               *gin.Context
-	dbClientFactory   *vodka.DbClientFactory
-	httpClientFactory *vodka.HttpClientFactory
-	loggerFactory     *vodka.LoggerFactory
+	dbClientFactory   *flamingo.DbClientFactory
+	httpClientFactory *flamingo.HttpClientFactory
+	loggerFactory     *flamingo.LoggerFactory
 }
 
 func NewAppContext(ctx *gin.Context) context.Context {
 	fields := map[string]interface{}{}
 	fields["X-Correlation-ID"] = ctx.Request.Header["X-Correlation-ID"]
 
-	loggerFactory := vodka.NewLoggerFactoryWithFields(fields)
-	dbClientFactory := vodka.NewDbClientFactory(loggerFactory)
-	httpClientFactory := vodka.NewHttpClientFactory(loggerFactory)
+	loggerFactory := flamingo.NewLoggerFactoryWithFields(fields)
+	dbClientFactory := flamingo.NewDbClientFactory(loggerFactory)
+	httpClientFactory := flamingo.NewHttpClientFactory(loggerFactory)
 
 	appContext := AppContext{ctx, dbClientFactory, httpClientFactory, loggerFactory}
 	return appContext
@@ -40,7 +40,7 @@ func (a *AppContext) Services() *services.Services {
 	return services.New(a.dbClientFactory, a.httpClientFactory, a.loggerFactory)
 }
 
-func (a *AppContext) NewLogger(name string) vodka.Logger {
+func (a *AppContext) NewLogger(name string) flamingo.Logger {
 	return a.loggerFactory.NewLogger(name)
 }
 

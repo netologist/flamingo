@@ -1,16 +1,16 @@
 package repositories
 
 import (
-	"github.com/hasanozgan/vodka"
-	"github.com/hasanozgan/vodka/examples/basic/models"
+	"github.com/hasanozgan/flamingo"
+	"github.com/hasanozgan/flamingo/examples/basic/models"
 )
 
 type UserRepository struct {
-	dbClientFactory *vodka.DbClientFactory
-	logger          vodka.Logger
+	dbClientFactory *flamingo.DbClientFactory
+	logger          flamingo.Logger
 }
 
-func NewUserRepository(dbClientFactory *vodka.DbClientFactory, logger vodka.Logger) *UserRepository {
+func NewUserRepository(dbClientFactory *flamingo.DbClientFactory, logger flamingo.Logger) *UserRepository {
 	return &UserRepository{dbClientFactory, logger}
 }
 
@@ -26,7 +26,7 @@ func (r *UserRepository) FindUserById(id int) (models.User, error) {
 
 	session.Db("mydb").Collection("users").FindById(123).One(&result)
 	session.Db("mydb").Collection("users").FindById(123).All(&results)
-	session.Db("mydb").Collection("users").Query(vodka.Selectors{"id": 123}).All(&results)
+	session.Db("mydb").Collection("users").Query(flamingo.Selectors{"id": 123}).All(&results)
 
 	defer session.Close()
 
